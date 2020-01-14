@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Sebastian Lequime" />
+
+<meta name="date" content="2019-12-18" />
+
+<title>Getting started</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting started</h1>
+<h4 class="author">Sebastian Lequime</h4>
+<h4 class="date">2019-12-18</h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p><code>nosoi</code> aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parametric. This flexibility allows <code>nosoi</code> to take into account the effect of numerous covariates, taken individually or in the form of interactions, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. At its core, <code>nosoi</code> generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing to reconstruct in great details the history of the epidemic.</p>
+<p><code>nosoi</code> is an agent-based model, which means it is centered on individuals, here called “hosts”, that enter the simulation when they get infected. <code>nosoi</code> is also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities. It operates on a discretized time.</p>
+<div id="critical-assumption-of-nosoi" class="section level2">
+<h2>Critical assumption of <code>nosoi</code></h2>
+<p><code>nosoi</code> assumes that the maximum number of hosts infected during a simulation is orders of magnitude smaller than the total exposed population. This means that, currently, it does not take into account building herd immunity using the simulated epidemic results <!-- PB: I'm not sure I understand the sentence above. --> (although a proxy can be used, as it will be discussed in several of the companion tutorials).</p>
+</div>
+<div id="essential-building-blocks-3-probabilities-and-2-numbers" class="section level2">
+<h2>Essential building blocks: 3 probabilities and 2 numbers</h2>
+<p>At its core, <code>nosoi</code> can be summarized by 3 probabilities and 2 numbers at a specific time point:</p>
+<ul>
+<li><code>pExit</code> the probability to exit the simulation. For hosts, that means - for example - dying, being cured, leaving the study area, etc.</li>
+<li><code>pMove</code> the probability to move, only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could be - for example - traveling, changing status (gaining access to treatment), etc.</li>
+<li><code>sdMove</code> the standard deviation of the random walk (links to the distance traveled in coordinate space), only relevant when a structure is imposed or assumed in a continuous space.</li>
+<li><code>nContact</code> the number of contacts. How many potentially infectious contacts does an infected host have?</li>
+<li><code>pTrans</code> the probability to transmit. When a contact occurs between two hosts, with one of them being infected, the probability that the infection gets transmitted to the uninfected one.</li>
+</ul>
+<p>Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by <code>nosoi</code>, these probabilities could depend on a host’s parameters (e.g. genetics), dynamic parameters (for how long the host has been infected), environmental parameters (related to the host’s location), or the particular period of the simulation (e.g. seasons, mitigation campaign,…). All those parameters can be taken into account either individually, or for the population as a whole.</p>
+</div>
+<div id="what-happens-at-each-time-step" class="section level2">
+<h2>What happens at each time step?</h2>
+<p>Time is discretized in <code>nosoi</code>. Each time step follows the same pattern for each host:</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<ul>
+<li><code>pExit</code>: does the host exit the simulation ? This step samples YES or NO based on the probability <code>pExit</code>.</li>
+<li><code>pMove</code>: does the host move (if there is structure) ? This step samples YES or NO based on the probability <code>pMove</code>.</li>
+<li><code>sdMove</code>: how far does the host move (if the structure is a continuous space)? This step returns a number used as a distance in the continuous space, drawn with standard deviation <code>sdMove</code>.</li>
+<li><code>nContact</code>: how many infectious contacts does the host have? This step yields an integer number <code>nContact</code>.</li>
+<li><code>pTrans</code>: if there is an infectious contact, does the host transmit the infection to a new host? This step samples YES or NO based on the probability <code>pTrans</code>.</li>
+</ul>
+<p>After these five propagation steps, the simulation moves to the next time step.</p>
+</div>
+</div>
+<div id="setting-up-the-core-functions" class="section level1">
+<h1>Setting up the core functions</h1>
+<p><code>nosoi</code> runs under a series of user-defined probabilities and numbers (see <a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">General principles</a> ). Each follows the same principles to be set up. We provide here a detailed explanation on how to set up a function correctly so that it can be used in the simulator. This will apply to the five core functions already mentioned: <code>pExit</code>, <code>pMove</code>, <code>sdMove</code>, <code>nContact</code> and <code>pTrans</code>.</p>
+<div id="expected-output" class="section level2">
+<h2>Expected output</h2>
+<p>Every function which name starts with a <code>p</code> (i.e. <code>pExit</code>, <code>pMove</code> and <code>pTrans</code>) should return a single probability (a number between 0 and 1).</p>
+<p><code>nContact</code> should return a positive natural number (positive integer).</p>
+<p><code>sdMove</code> should return a real number (keep in mind this number is related to your coordinate space).</p>
+</div>
+<div id="functions-arguments" class="section level2">
+<h2>Functions’ arguments</h2>
+<div id="t" class="section level3">
+<h3><code>t</code></h3>
+<p>A core function in <code>nosoi</code> should always explicitly depend on the time <code>t</code> (e.g. <code>pExit(t)</code>), even if <code>t</code> is not used within the body of the function. For instance, to return a single constant value of 0.08, the function should be expressed as:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="fl">0.08</span>}</a></code></pre></div>
+<!-- This will return a single value (0.08). -->
+<p>The argument <code>t</code> represents the time since the host’s initial infection, and can be included in the body of the function, to model a time-varying probability or number. For instance, a quantity depending on the following function will evolve in time as a logistic distribution with parameters <span class="math inline">\(\mu\)</span> 10 and <span class="math inline">\(s\)</span> 2:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t){<span class="kw">plogis</span>(t,<span class="dv">10</span>,<span class="dv">2</span>)}</a></code></pre></div>
+<!-- Here the probability/number will follow a logistic distribution with parameters $\mu$ 10 and $s$ 2. -->
+</div>
+<div id="prestime" class="section level3">
+<h3><code>prestime</code></h3>
+<p>The argument <code>prestime</code> can be used to represent the <em>absolute</em> time of the simulation, shared by all the hosts (as opposed to the relative time since infection <code>t</code>, which is individual-dependent). For instance, the following function can be used to produce a periodic pattern:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,prestime){(<span class="kw">sin</span>(prestime<span class="op">/</span><span class="dv">12</span>)<span class="op">+</span><span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span>}</a></code></pre></div>
+<!-- In that specific case, the function will return values following a periodic pattern. -->
+</div>
+<div id="current.in-and-current.env.value" class="section level3">
+<h3><code>current.in</code> and <code>current.env.value</code></h3>
+<p>The arguments <code>current.in</code> (discrete structure) or <code>current.env.value</code> (continuous structure) can be used to represent the location of the host (only if a structured population is used), as shown below:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.in){</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">&quot;A&quot;</span>){<span class="kw">return</span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">&quot;B&quot;</span>){<span class="kw">return</span>(<span class="fl">0.5</span>)}</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">&quot;C&quot;</span>){<span class="kw">return</span>(<span class="dv">1</span>)}} <span class="co">#discrete (between states &quot;A&quot;,&quot;B&quot; and &quot;C&quot;)</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.env.value){current.env.value<span class="op">/</span><span class="dv">100</span>} <span class="co">#continuous</span></a></code></pre></div>
+<p>For more details on how to set up the influence of the structure, we refer to the tutorials on <a href="discrete.html">discrete</a> and <a href="continuous.html">continuous</a> structure.</p>
+</div>
+<div id="host.count" class="section level3">
+<h3><code>host.count</code></h3>
+<p>The argument <code>host.count</code> can be used to represent the number of hosts present at a given location (only for a structured population), as in the following:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.in, host.count){</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">&quot;A&quot;</span>){<span class="kw">return</span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">&quot;B&quot;</span> <span class="op">&amp;</span><span class="st"> </span>host.count <span class="op">&lt;</span><span class="st"> </span><span class="dv">300</span> ){<span class="kw">return</span>(<span class="fl">0.5</span>)}</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">&quot;B&quot;</span> <span class="op">&amp;</span><span class="st"> </span>host.count <span class="op">&gt;=</span><span class="st"> </span><span class="dv">300</span> ){<span class="kw">return</span>(<span class="dv">0</span>)}</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="cf">if</span>(current.in<span class="op">==</span><span class="st">&quot;C&quot;</span>){<span class="kw">return</span>(<span class="dv">1</span>)}} <span class="co">#discrete (between states &quot;A&quot;,&quot;B&quot; and &quot;C&quot;)</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,current.env.value,host.count){(current.env.value<span class="op">-</span>host.count)<span class="op">/</span><span class="dv">100</span>} <span class="co">#continuous</span></a></code></pre></div>
+</div>
+</div>
+<div id="extra-parameters" class="section level2">
+<h2>Extra Parameters</h2>
+<p>Any of the parameters used in these functions can be themselves dependent on the individual host (in order to include some heterogeneity between host). For instance, the <span class="math inline">\(\mu\)</span> parameter of a logistic distribution can be determined for each individual host by another function to be specified:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t,pFunction.param1){<span class="kw">plogis</span>(t,pFunction.param1,<span class="dv">2</span>)}</a></code></pre></div>
+<!-- In this case, the $\mu$ parameter will be determined for each individual host by another function that you have to specify. Here we will use: -->
+<p>Where for instance <span class="math inline">\(\mu\)</span> can be sampled from a normal distribution (mean = 10 and sd = 2):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">p_Function_param1 &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">rnorm</span>(x,<span class="dt">mean=</span><span class="dv">10</span>,<span class="dt">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></a></code></pre></div>
+<p>Notice here that the function is expressed as a function of <code>x</code> instead of <code>t</code>. <code>x</code> is present in the body of the function as the number of draws to make from the distribution.</p>
+<p>Every parameter function you specify should be gathered into a list, where the function determining the parameter for each individual (here, <code>p_Function_param1</code>) has to be named according to the name used in <code>p_Function</code> for this parameter (here, <code>pFunction.param1</code>).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">p_Function_parameters  &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">pFunction.param1 =</span> p_Function_param1)</a></code></pre></div>
+</div>
+<div id="combining-arguments" class="section level2">
+<h2>Combining arguments</h2>
+<p>We have previously shown that you can combine the time since infection <code>t</code> with other parameters such as <code>current.in</code> or <code>prestime</code>. In fact, you can combine as many arguments as you want, making a function dependent on the time since infection, current location, present time and individual host-dependent parameters. They however need to respect a specific order to be correctly parsed by the simulator: first <code>t</code>, then <code>prestime</code>, then <code>current.in</code> (discrete) or <code>current.env.value</code> (continuous) and finally individual host-dependent parameters.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">p_Function  &lt;-<span class="st"> </span><span class="cf">function</span>(t, prestime, current.in, pFunction.param1, pFunction.param2,...){}</a></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
