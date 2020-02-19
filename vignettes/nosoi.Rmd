@@ -4,9 +4,13 @@ author: "Sebastian Lequime"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{general-principles}
+  %\VignetteIndexEntry{Getting-started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{ggplot2}
+  %\VignetteDepends{igraph}
+  %\VignetteDepends{viridis}
+  %\VignetteDepends{ggnetwork}
 ---
 
 # Introduction
@@ -39,32 +43,37 @@ Each of these probabilities and numbers are computed during the simulation. In a
 Time is discretized in `nosoi`. Each time step follows the same pattern for each host:
 
 ```{r setupMatrix, echo=FALSE, message=FALSE,warning=FALSE}
-library(ggplot2)
-library(viridis)
-library(igraph)
-library(ggnetwork)
-
-transition.matrix = matrix(c(0,0,0,0,0,
-                             1,0,0,0,0,
-                             0,1,0,0,0,
-                             0,0,1,0,0,
-                             0,0,0,1,0),nrow = 5, ncol = 5,
-                           dimnames=list(c("pExit","pMove","sdMove","nContact","pTrans"),
-                                         c("pExit","pMove","sdMove","nContact","pTrans")))
-
-melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
-
-melted.transition.matrix = subset(melted.transition.matrix, prob!=0)
-
-graph.Matrix <- graph.data.frame(melted.transition.matrix,directed=T)
-
-graph.simA.network = ggnetwork(graph.Matrix, layout = "circle",arrow.gap=0.18) #using ggnetwork to provide the layout
-
-#plotting the network
-ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
-  geom_edges(color = "grey70",arrow = arrow(length = unit(1, "lines"), type = "closed"),curvature = 0.2) + geom_nodes(aes(color =vertex.names) , size = 30) +
-  geom_nodetext(aes(label = vertex.names),color="white", fontface = "bold",size=3) + scale_color_viridis(guide=FALSE,discrete=TRUE) +
-  theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2)
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis", quietly = TRUE) || !requireNamespace("igraph", quietly = TRUE) || !requireNamespace("ggnetwork", quietly = TRUE)) {
+  message("Packages 'ggplot2', 'viridis', 'igraph' and 'ggnetwork'  are needed for plotting this figure.")
+} else {
+  library(ggplot2)
+  library(viridis)
+  library(igraph)
+  library(ggnetwork)
+  
+  transition.matrix = matrix(c(0,0,0,0,0,
+                               1,0,0,0,0,
+                               0,1,0,0,0,
+                               0,0,1,0,0,
+                               0,0,0,1,0),nrow = 5, ncol = 5,
+                             dimnames=list(c("pExit","pMove","sdMove","nContact","pTrans"),
+                                           c("pExit","pMove","sdMove","nContact","pTrans")))
+  
+  melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"),value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
+  
+  melted.transition.matrix <- subset(melted.transition.matrix, prob!=0)
+  
+  graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
+  graph.Matrix2 = igraph::layout_in_circle(graph.Matrix)
+  
+  graph.simA.network <- ggnetwork::ggnetwork(graph.Matrix, layout = graph.Matrix2, arrow.gap=0.18) #using ggnetwork to provide the layout
+  
+  #plotting the network
+  ggplot(graph.simA.network, aes(x = x, y = y, xend = xend, yend = yend)) +
+    geom_edges(color = "grey70",arrow = arrow(length = unit(1, "lines"), type = "closed"),curvature = 0.2) + geom_nodes(aes(color = name) , size = 30) +
+    geom_nodetext(aes(label = name),color="white", fontface = "bold",size=3) + scale_color_viridis(guide=FALSE,discrete=TRUE) +
+    theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2)
+}
 ```
 
 - `pExit`: does the host exit the simulation ? This step samples YES or NO based on the probability `pExit`.
@@ -179,3 +188,22 @@ We have previously shown that you can combine the time since infection `t` with 
 ```{r pFunction8, eval = FALSE}
 p_Function  <- function(t, prestime, current.in, pFunction.param1, pFunction.param2,...){}
 ```
+
+# Going further
+
+Once your core functions are ready, you can provide everything `nosoi` needs to run a simulation. A series of tutorials will guide you in how to set up `nosoi` depending on your case, both for single host and dual host scenarios:
+
+1. [Spread of a pathogen in a homogeneous population (no structure) of hosts](none.html), a "simple" scenario.
+2. [Spread of a pathogen in a structured (discrete) population of hosts](discrete.html).
+3. [Spread of a pathogen in a structure (continuous) population of hosts](continuous.html).
+
+To get basic statistics or approximated phylogenetic trees out of your simulations output, you can have a look at [this page](output.html).
+To visualize your simulations, you can have a look at [these few examples](https://slequime.github.io/nosoi/articles/examples/viz.html).
+
+A series of practical examples are also available: 
+
+- [Spread of dengue virus in a discrete space](https://slequime.github.io/nosoi/articles/examples/dengue.html).
+- [Spread of Ebola virus in a continuous space](https://slequime.github.io/nosoi/articles/examples/ebola.html).
+- [Epidemiological impact of mosquito vector competence](https://slequime.github.io/nosoi/articles/examples/vector-competence.html).
+
+<!-- PB: If the examples are not on the CRAN, could these dead link be a problem ? -->
