@@ -82,10 +82,10 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 7)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 20)
 
@@ -100,6 +100,11 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-3")),2)
   expect_equal(subset(full.results.nosoi.state, hosts.ID == "H-3")$state,c("A","C"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.when.exit = subset(full.results.nosoi,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.when.exit, current.in == "A")$N,integer(0))
@@ -111,8 +116,8 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   test <- summary(test.nosoiA)
 
   expect_equal(test$R0$N.inactive.A, 26)
-  expect_equal(test$dynamics[21]$t, 11)
-  expect_equal(test$dynamics[21]$Count, 2)
+  expect_equal(test$dynamics[21]$t, 13)
+  expect_equal(test$dynamics[21]$Count, 3)
   expect_equal(test$dynamics[21]$type, "V")
   expect_equal(test$dynamics[21]$state, "A")
 
@@ -133,6 +138,14 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_error(test.stateTable.A <- getTableHosts(test.nosoiA, pop="Z"),
                "Population Z is not recognized.")
 
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter", {
@@ -231,10 +244,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 9)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 27)
 
@@ -247,6 +260,11 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-3")),2)
   expect_equal(subset(full.results.nosoi.state, hosts.ID == "H-3")$state,c("B","A"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.when.exit.B <- subset(test.nosoiA$host.info.B$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   Where.when.exit.A <- subset(test.nosoiA$host.info.A$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
@@ -258,6 +276,15 @@ test_that("Transmission is coherent with single introduction (host A) differenti
 
   test.A <- test.nosoiA$host.info.A$table.state %>% group_by(hosts.ID) %>% summarise(N=length(hosts.ID))
   expect_equal(length(test.A$N) > 1, TRUE)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
@@ -356,10 +383,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 11)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 21)
 
@@ -374,6 +401,11 @@ test_that("Transmission is coherent with single introduction (host A) differenti
 
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "V-2")),2)
   expect_equal(subset(full.results.nosoi.state, hosts.ID == "V-2")$state,c("A","C"))
+
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
 
   Where.when.exit.B <- subset(test.nosoiA$host.info.B$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   Where.when.exit.A <- subset(test.nosoiA$host.info.A$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
@@ -524,10 +556,10 @@ test_that("Epidemics dying out", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 2)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 12)
 
@@ -537,6 +569,11 @@ test_that("Epidemics dying out", {
   #Movement
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-1")),3)
   expect_equal(subset(full.results.nosoi.state, hosts.ID == "H-1")$state,c("A","B","C"))
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
 })
 
 test_that("start with host B", {
@@ -635,10 +672,10 @@ test_that("start with host B", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 9)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 17)
 
@@ -648,6 +685,15 @@ test_that("start with host B", {
   #Movement
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-1")),3)
   expect_equal(subset(full.results.nosoi.state, hosts.ID == "H-1")$state,c("A","B","C"))
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with single introduction (host A) differential according to host, shared parameter, A does not move", {
@@ -764,10 +810,10 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 7)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 14)
 
@@ -783,6 +829,11 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "V-2")),2)
   expect_equal(subset(full.results.nosoi.state, hosts.ID == "V-2")$state,c("A","B"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.when.exit.B <- subset(test.nosoiA$host.info.B$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   Where.when.exit.A <- subset(test.nosoiA$host.info.A$table.hosts,active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
@@ -795,4 +846,12 @@ test_that("Transmission is coherent with single introduction (host A) differenti
   expect_equal(length(subset(out,state=="B" & t==15 & type=="H")$Count),0)
   expect_equal(subset(out,state=="C" & t==15 & type=="H")$Count,2)
 
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })

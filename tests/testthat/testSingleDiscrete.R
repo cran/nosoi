@@ -174,6 +174,11 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")),3)
   expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C","B"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.at.end = getHostData(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.at.end, current.in == "A")$N,62)
@@ -185,9 +190,9 @@ test_that("Movement is coherent with single introduction, constant pMove", {
 
   expect_equal(test$R0$N.inactive, 31)
   expect_equal(test$dynamics[21]$t, 14)
-  expect_equal(test$dynamics[21]$Count, 4)
+  expect_equal(test$dynamics[21]$Count, 11)
   expect_equal(test$dynamics[21]$type, "H")
-  expect_equal(test$dynamics[21]$state, "B")
+  expect_equal(test$dynamics[21]$state, "C")
 
   #Get host table
   test.hostTable.A <- getTableHosts(test.nosoiA)
@@ -196,6 +201,15 @@ test_that("Movement is coherent with single introduction, constant pMove", {
   #Get state table
   test.stateTable.A <- getTableState(test.nosoiA)
   expect_equal(test.stateTable.A[52]$hosts.ID, "H-26")
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 #--------------------------------------------------------------------------------------------------------------------------------------------
@@ -249,11 +263,25 @@ test_that("Movement is coherent with single introduction, complex pMove", {
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),11)
   expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")$state,c("A","C","A","C","A","B","C","B","C","A","C"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.at.end = getHostData(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.at.end, current.in == "A")$N,83)
   expect_equal(subset(Where.at.end, current.in == "B")$N,19)
   expect_equal(subset(Where.at.end, current.in == "C")$N,16)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Movement is coherent with single introduction, constant but different pMove, 1 loc (C) is sink. Ce tombeau sera votre tombeau !", {
@@ -319,8 +347,22 @@ test_that("Movement is coherent with single introduction, constant but different
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),2)
   expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")$state,c("A","C"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.at.end = getHostData(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.at.end, current.in == "C")$N,138)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Error message pops up if different pMove poorly formatted", {
@@ -363,7 +405,6 @@ test_that("Error message pops up if different pMove poorly formatted", {
     ),
     "pMove should have a realisation for each possible state. diff.pMove is TRUE."
   )
-
 })
 
 test_that("Movement is coherent with single introduction, complex and different pMove, 1 loc (C) is sink.", {
@@ -420,8 +461,22 @@ test_that("Movement is coherent with single introduction, complex and different 
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),2)
   expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")$state,c("A","C"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.at.end = getHostData(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.at.end, current.in == "C")$N,52)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Error message pops out when missing state in diff functions", {
@@ -585,11 +640,25 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")),2)
   expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.when.exit = subset(getHostData(test.nosoiA, "table.hosts"),active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.when.exit, current.in == "A")$N,integer(0))
   expect_equal(subset(Where.when.exit, current.in == "B")$N,44)
   expect_equal(subset(Where.when.exit, current.in == "C")$N,34)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Movement is coherent with single introduction, constant pMove, diff pTrans ", {
@@ -650,11 +719,25 @@ test_that("Movement is coherent with single introduction, constant pMove, diff p
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")),2)
   expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.when.infected = subset(getHostData(test.nosoiA, "table.hosts"),active==0) %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.when.infected, inf.in == "B")$N,integer(0))
   expect_equal(subset(Where.when.infected, inf.in == "A")$N,56)
   expect_equal(subset(Where.when.infected, inf.in == "C")$N,17)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Movement is coherent with single introduction, constant pMove, diff nContact ", {
@@ -714,11 +797,25 @@ test_that("Movement is coherent with single introduction, constant pMove, diff n
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")),2)
   expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-3")$state,c("A","C"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.when.infected = subset(getHostData(test.nosoiA, "table.hosts"),active==0) %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.when.infected, inf.in == "B")$N,integer(0))
   expect_equal(subset(Where.when.infected, inf.in == "A")$N,27)
   expect_equal(subset(Where.when.infected, inf.in == "C")$N,67)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Movement is coherent with single introduction, all parameters are diff", {
@@ -805,6 +902,11 @@ test_that("Movement is coherent with single introduction, all parameters are dif
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
   expect_equal(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")$state,c("A","C","A"))
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.when.infected = getHostData(test.nosoiA, "table.hosts") %>% group_by(inf.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.when.infected, inf.in == "B")$N,integer(0))
   expect_equal(subset(Where.when.infected, inf.in == "A")$N,1)
@@ -813,6 +915,15 @@ test_that("Movement is coherent with single introduction, all parameters are dif
   Where.when.died = subset(getHostData(test.nosoiA, "table.hosts"),active==0) %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
   expect_equal(subset(Where.when.died, current.in == "C")$N,integer(0))
   expect_equal(subset(Where.when.died, current.in == "D")$N,207)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Epidemic dying out", {
@@ -856,9 +967,23 @@ test_that("Epidemic dying out", {
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),1)
   expect_equal(test.nosoiA$total.time,4)
 
+  skip_if_not_installed("dplyr")
+  skip_if_not_installed("magrittr")
+  library(dplyr)
+  library(magrittr)
+
   Where.at.end = getHostData(test.nosoiA, "table.hosts") %>% group_by(current.in) %>% summarise(N=length(hosts.ID))
 
   expect_equal(subset(Where.at.end, current.in == "A")$N,1)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 
@@ -930,7 +1055,16 @@ test_that("Movement is coherent with single introduction, no pMove, no die, diff
 
   #Number of host at each loc at each time
   out = getDynamic(test.nosoiA) #  ggplot(out, aes(x=t,y=Count,color=state)) + geom_line() + geom_hline(yintercept=30)
-  expect_equal(subset(out,state=="C" & t==26)$Count,30)
-  expect_equal(subset(out,state=="B" & t==26)$Count,17)
-  expect_equal(subset(out,state=="A" & t==25)$Count,32)
+  expect_equal(subset(out,state=="C" & t==26)$Count,28)
+  expect_equal(subset(out,state=="B" & t==26)$Count,15)
+  expect_equal(subset(out,state=="A" & t==25)$Count,30)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })

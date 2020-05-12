@@ -22,7 +22,11 @@ if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("viridis",
   
   transition.matrix <- matrix(c(0,0.2,0.4,0.5,0,0.6,0.5,0.8,0), nrow = 3, ncol = 3, dimnames=list(c("A","B","C"),c("A","B","C")))
   
-  melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"), value.name="prob", as.is = TRUE) #melting the matrix go get from -> to in one line with probability
+  # melting the matrix go get from -> to in one line with probability
+  # melted.transition.matrix <- reshape2::melt(transition.matrix, varnames = c("from","to"), value.name="prob", as.is = TRUE)
+  melted.transition.matrix <- as.data.frame.table(transition.matrix,
+                                                  stringsAsFactors = FALSE)
+  colnames(melted.transition.matrix) <- c("from", "to", "prob")
   
   melted.transition.matrix <- subset(melted.transition.matrix, prob!=0)
   
@@ -33,12 +37,14 @@ graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
   
   graph.matrix.network <- ggnetwork::ggnetwork(graph.Matrix, layout = graph.Matrix2, arrow.gap=0.18) #using ggnetwork to provide the layout
   
+  graph.matrix.network2 <- subset(graph.matrix.network, ! is.na(prob))
+  
   #plotting the network
   ggplot(graph.matrix.network, aes(x = x, y = y, xend = xend, yend = yend)) +
     geom_edges(color = "grey70", arrow = arrow(length = unit(1, "lines"), type = "closed"), curvature = 0.2) + geom_nodes(aes(color = name) , size = 30) +
     geom_nodetext(aes(label = name), color="white", fontface = "bold",size=15) + scale_color_viridis(guide=FALSE, discrete=TRUE) +
     theme_blank() + ylim(-0.5,1.2) + xlim(-0.5,1.2) +
-    geom_text(data=graph.matrix.network,aes(x=(x+xend)/2,y=(y+yend)/2,label = prob,color=name), size = 6)
+    geom_text(data=graph.matrix.network2,aes(x=(x+xend)/2,y=(y+yend)/2,label = prob,color=name), size = 6)
 }
 
 ## ----setupA, eval=FALSE-------------------------------------------------------
@@ -65,8 +71,8 @@ graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
 #  n_contact_fct = function(t){abs(round(rnorm(1, 0.5, 1), 0))}
 
 ## ----nContact2, echo=FALSE, message=FALSE-------------------------------------
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  message("Package 'ggplot2' is needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'dplyr' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(dplyr)
@@ -90,8 +96,8 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 #  p_max_fct <- function(x){rbeta(x, shape1=5, shape2=2)}
 
 ## ----pTrans3, echo=FALSE------------------------------------------------------
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  message("Package 'ggplot2' is needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'dplyr' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(dplyr)
@@ -207,8 +213,8 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 #  n_contact_fct.B = function(t){sample(c(0,1,2),1,prob=c(0.6,0.3,0.1))}
 
 ## ----nContact2.B, echo=FALSE--------------------------------------------------
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  message("Package 'ggplot2' is needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'dplyr' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(dplyr)
@@ -229,8 +235,8 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 #  max.time_fct <- function(x){rnorm(x,mean = 5,sd=1)}
 
 ## ----pTrans3.B, echo=FALSE----------------------------------------------------
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  message("Package 'ggplot2' is needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("dplyr", quietly = TRUE)) {
+  message("Packages 'ggplot2' and 'dplyr' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(dplyr)

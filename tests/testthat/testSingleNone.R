@@ -28,6 +28,10 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 12)
 
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
 })
 
 
@@ -89,6 +93,11 @@ test_that("Transmission is coherent with single introduction, constant pExit and
   expect_error(test.stateTable.A <- getTableHosts(test.nosoiA, pop="B"),
                "There are no other hosts than 'A' in a single-host simulation.")
 
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
 })
 
 test_that("Transmission is coherent with single introduction, simple pExit and pTrans", {
@@ -125,6 +134,15 @@ test_that("Transmission is coherent with single introduction, simple pExit and p
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiB)
+  dynNew <- getDynamic(test.nosoiB)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiB)
+  r_0 <- getR0(test.nosoiB)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with single introduction, complex pExit and pTrans", {
@@ -165,6 +183,15 @@ test_that("Transmission is coherent with single introduction, complex pExit and 
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiC)
+  dynNew <- getDynamic(test.nosoiC)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiC)
+  r_0 <- getR0(test.nosoiC)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with multiple introductions, constant pExit and pTrans", {
@@ -205,6 +232,14 @@ test_that("Transmission is coherent with multiple introductions, constant pExit 
   expect_equal(clusters(g, "weak")$no, 3)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
 
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with multiple introductions, simple pExit and pTrans", {
@@ -241,6 +276,15 @@ test_that("Transmission is coherent with multiple introductions, simple pExit an
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 3)
   expect_equal(diameter(g, directed=F, weights=NA), 4)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiB)
+  dynNew <- getDynamic(test.nosoiB)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiB)
+  r_0 <- getR0(test.nosoiB)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Transmission is coherent with multiple introductions, complex pExit and pTrans", {
@@ -280,6 +324,15 @@ test_that("Transmission is coherent with multiple introductions, complex pExit a
   expect_equal(transitivity(g, type="global"), 0)
   expect_equal(clusters(g, "weak")$no, 3)
   expect_equal(diameter(g, directed=F, weights=NA), 6)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiC)
+  dynNew <- getDynamic(test.nosoiC)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiC)
+  r_0 <- getR0(test.nosoiC)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Dying out epidemic", {
@@ -314,4 +367,13 @@ test_that("Dying out epidemic", {
 
   expect_equal(nrow(getHostData(test.nosoiA, "table.host")),1)
   expect_equal(test.nosoiA$total.time,4)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })

@@ -99,10 +99,10 @@ test_that("Both hosts move", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 8)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
   expect_equal(test.nosoiA$total.time, 22)
 
@@ -116,6 +116,14 @@ test_that("Both hosts move", {
   #Movement
   expect_equal(nrow(subset(full.results.nosoi.state, hosts.ID == "H-1")),2)
 
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 
@@ -218,10 +226,10 @@ test_that("One host (A) moves", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 10)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
 
   expect_equal(nrow(test.nosoiA$host.info.B$table.hosts), nrow(test.nosoiA$host.info.B$table.state))
@@ -241,6 +249,15 @@ test_that("One host (A) moves", {
 
   expect_equal(nrow(H1_moves),5)
   expect_equal(H1_moves$current.env.value[1] < H1_moves$current.env.value[5],TRUE)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("One host (B) moves", {
@@ -341,10 +358,10 @@ test_that("One host (B) moves", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 10)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
 
   expect_equal(nrow(test.nosoiA$host.info.A$table.hosts), nrow(test.nosoiA$host.info.A$table.state))
@@ -364,6 +381,15 @@ test_that("One host (B) moves", {
 
   expect_equal(nrow(H1_moves),2)
   expect_equal(H1_moves$current.env.value[1] < H1_moves$current.env.value[2],TRUE)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Epidemic dies out", {
@@ -474,6 +500,15 @@ test_that("Epidemic dies out", {
 
   H1_moves <- subset(full.results.nosoi.state, hosts.ID == "V-1")
   expect_equal(nrow(H1_moves),2)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
 
 test_that("Error if no host move", {
@@ -680,10 +715,10 @@ test_that("One host (B) moves, host count", {
   expect_equal(clusters(g, "weak")$no, 1)
   expect_equal(diameter(g, directed=F, weights=NA), 9)
 
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts$inf.by,"H-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.A$table.hosts[-1]$inf.by,"V-") == TRUE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts$inf.by,"V-") == FALSE),TRUE)
-  expect_equal(all(str_detect(test.nosoiA$host.info.B$table.hosts[-1]$inf.by,"H-") == TRUE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.A$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.A$table.hosts[-1]$inf.by) == TRUE),TRUE)
+  expect_equal(all(grepl("V-", test.nosoiA$host.info.B$table.hosts$inf.by) == FALSE),TRUE)
+  expect_equal(all(grepl("H-", test.nosoiA$host.info.B$table.hosts[-1]$inf.by) == TRUE),TRUE)
 
 
   expect_equal(nrow(test.nosoiA$host.info.A$table.hosts), nrow(test.nosoiA$host.info.A$table.state))
@@ -703,4 +738,13 @@ test_that("One host (B) moves, host count", {
 
   expect_equal(nrow(H1_moves),6)
   expect_equal(H1_moves$current.env.value[1] < H1_moves$current.env.value[2],TRUE)
+
+  skip_if_not_installed("dplyr")
+  dynOld <- getDynamicOld(test.nosoiA)
+  dynNew <- getDynamic(test.nosoiA)
+  expect_equal(dynOld, dynNew)
+
+  r_0_old <- getR0Old(test.nosoiA)
+  r_0 <- getR0(test.nosoiA)
+  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
 })
