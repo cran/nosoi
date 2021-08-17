@@ -61,7 +61,7 @@ graph.Matrix <- igraph::graph.data.frame(melted.transition.matrix,directed=T)
 #  p_Exit_fct  <- function(t,current.in){
 #    if(current.in=="A"){return(0.02)}
 #    if(current.in=="B"){return(0.05)}
-#    if(current.in=="C"){return(0.1)}}
+#    if(current.in=="C"){return(0.1)}
 #  }
 
 ## ----pMove1, eval=FALSE-------------------------------------------------------

@@ -3,7 +3,7 @@ context("Testing single-host with continuous structure")
 test_that("Error message pops out when missing state in diff functions", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -138,7 +138,7 @@ test_that("Error message pops out when missing state in diff functions", {
 test_that("Diffusion in continuous space", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -184,6 +184,9 @@ test_that("Diffusion in continuous space", {
                           pExit=p_Exit_fct,
                           param.pExit=NA)
 
+  ## Output
+  expect_output(print(test.nosoiA), "a single host with a continuous structure")
+
   expect_equal(nrow(getHostData(test.nosoiA, "table.hosts")),648)
   expect_equal(nrow(subset(getHostData(test.nosoiA, "table.state"), hosts.ID == "H-1")),3)
 
@@ -192,15 +195,16 @@ test_that("Diffusion in continuous space", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
 })
 
 test_that("Epidemic dying out", {
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(10)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -252,9 +256,10 @@ test_that("Epidemic dying out", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
+
 })
 
 test_that("Diffusion in continuous space with host count", {
@@ -263,7 +268,7 @@ test_that("Diffusion in continuous space with host count", {
   # profvis({
   library(raster)
 
-  #Generating a raster the for movement
+  #Generating a raster for the movement
   set.seed(860)
 
   test.raster <- raster(nrows=100, ncols=100, xmn=-50, xmx=50, ymn=-50,ymx=50)
@@ -330,7 +335,7 @@ test_that("Diffusion in continuous space with host count", {
   dynNew <- getDynamic(test.nosoiA)
   expect_equal(dynOld, dynNew)
 
-  r_0_old <- getR0Old(test.nosoiA)
   r_0 <- getR0(test.nosoiA)
-  expect_equal(r_0_old$R0.mean, r_0$R0.mean)
+  expect_equal(r_0$N.inactive,
+               ifelse(length(r_0$R0.dist) == 1 && is.na(r_0$R0.dist), 0, length(r_0$R0.dist)))
 })

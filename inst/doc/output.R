@@ -233,8 +233,8 @@ if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", qu
   test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 }
 
-if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE)) {
-  message("Packages 'ggplot2' and 'ggtree' are needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
+  message("Packages 'ggplot2' and 'ggtree (> 3.1.3)' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(ggtree)
@@ -280,7 +280,7 @@ if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", qu
 #                                             legend.key = element_blank())
 
 ## ----treeB_actual, echo=FALSE, message=FALSE----------------------------------
-if (!requireNamespace("ggtree", quietly = TRUE)) {
+if (!requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
   message("Package 'ggtree' is needed for plotting this figure.")
 } else {
   ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
@@ -316,7 +316,7 @@ if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", qu
 #                                             legend.key = element_blank())
 
 ## ----treeC_actual, echo=FALSE, message=FALSE----------------------------------
-if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE)) {
+if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
   message("Packages 'ape', 'tidytree', 'treeio' and 'ggtree' are needed for transmission tree generation.")
 } else {
   ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 

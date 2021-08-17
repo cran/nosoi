@@ -10,8 +10,8 @@
 #' @return All computed data is provided in a list:
 #' \describe{
 #'    \item{R0}{Provides a sublist with number of inactive hosts at the end of the simulation \code{N.inactive}, mean R0 \code{R0.mean}, and R0 distribution \code{R0.dist}. For more details, see \code{\link{getR0}}.}
-#'    \item{dynamics}{\code{\link[data.table:data.table-package]{data.table}} with the count of currently infected (i.e. active) hosts at each time step of the simulation (by state if the simulation was in a discrete structured host population). For more details, see \code{\link{getDynamic}}.}
-#'    \item{cumulative}{\code{\link[data.table:data.table-package]{data.table}} with the cumulative count of infected hosts at each time step of the simulation. For more details, see \code{\link{getCumulative}}.}
+#'    \item{dynamics}{\code{\link[data.table]{data.table}} with the count of currently infected (i.e. active) hosts at each time step of the simulation (by state if the simulation was in a discrete structured host population). For more details, see \code{\link{getDynamic}}.}
+#'    \item{cumulative}{\code{\link[data.table]{data.table}} with the cumulative count of infected hosts at each time step of the simulation. For more details, see \code{\link{getCumulative}}.}
 #'    }
 #'
 #' @seealso You can directly compute each elements of the list without using the summarise function. See \code{\link{getR0}}, \code{\link{getDynamic}} and \code{\link{getCumulative}}.
@@ -164,11 +164,11 @@ cumulativeInfected  <- function(table.nosoi, t) {
 
 #' @title Gets the cumulative number of infected hosts for the full length of the simulation
 #'
-#' @description This function computes from the output of a \code{nosoiSim} simulation the cumulative count of infected hosts at each time step of the simulation. The output is a \code{\link[data.table:data.table-package]{data.table}}.
+#' @description This function computes from the output of a \code{nosoiSim} simulation the cumulative count of infected hosts at each time step of the simulation. The output is a \code{\link[data.table]{data.table}}.
 #'
 #' @param nosoi.output Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).
 #'
-#' @return The output is a \code{\link[data.table:data.table-package]{data.table}} with the following structure:
+#' @return The output is a \code{\link[data.table]{data.table}} with the following structure:
 #' \describe{
 #'    \item{t}{Time-step (integer).}
 #'    \item{Count}{Cumulative number of infected hosts at given time-step.}
@@ -179,7 +179,7 @@ cumulativeInfected  <- function(table.nosoi, t) {
 #'
 #' @export getCumulative
 
-getCumulative  <- function(nosoi.output) {
+getCumulative <- function(nosoi.output) {
 
   if (nosoi.output$type == "single"){
     results.cumulative <- data.table()
@@ -203,11 +203,11 @@ getCumulative  <- function(nosoi.output) {
 
 #' @title Gets the current number of infected hosts for the full length of the simulation
 #'
-#' @description This function computes from the output of a \code{nosoiSim} simulation the dynamic count of infected hosts at each time step (and each state if discrete structure) of the simulation. The output is a \code{\link[data.table:data.table-package]{data.table}}.
+#' @description This function computes from the output of a \code{nosoiSim} simulation the dynamic count of infected hosts at each time step (and each state if discrete structure) of the simulation. The output is a \code{\link[data.table]{data.table}}.
 #'
 #' @param nosoi.output Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).
 #'
-#' @return The output is a \code{\link[data.table:data.table-package]{data.table}} with the following structure:
+#' @return The output is a \code{\link[data.table]{data.table}} with the following structure:
 #' \describe{
 #'    \item{state}{(only when discrete structure) Given state}
 #'    \item{Count}{Current number of infected hosts at given time-step.}
@@ -349,6 +349,7 @@ getDynamicOld  <- function(nosoi.output) {
 #' @title Gets R0 from a \code{nosoi} simulation
 #'
 #' @description Gets an estimate of secondary cases (what R0 usually tries to estimate) and its distribution from the output of a \code{nosoiSim} simulation. The actual calculation is based on inactive hosts at the end of the simulation to avoid bias introduced by hosts that have not finished their transmission potential.
+#' @details Current getR0 (after and including version 1.1.0) is a corrected version. In previous versions (prior to 1.1.0), the output included in its computation hosts that should not have been counted (still active).
 #'
 #' @param nosoi.output Output of a nosoi simulation (object of class \code{\link{nosoiSim}}).
 #'
@@ -371,38 +372,16 @@ getR0  <- function(nosoi.output) {
 
   if(nosoi.output$type == "single") {
     output.full <- nosoi.output$host.info.A$table.hosts[,c("hosts.ID", "inf.by","active")]
-    Inactive <- output.full[output.full[["active"]] == 0]  #get inactive hosts (have done their full cycle)
-    n.Inactive <- nrow(Inactive)
+    n.Inactive <- sum(output.full[["active"]] == 0)
     Sec.cases.A <- NA
     if(n.Inactive > 0) {
-      #Secondary case, same host type
-      output.small <- output.full[, c("hosts.ID", "inf.by")]
-      output.full.merged <- output.small[output.full, on="hosts.ID==inf.by"]
-      colnames(output.full.merged) <- c("inf.by", "inf.by.y", "hosts.ID", "active")
-      # output.full.merged <- dplyr::left_join(output.full.merged, output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y"))
-      # output.full.merged <- as.data.table(output.full.merged)
-
-      #estimating R0 (mean number of secondary cases)
-      Sec.cases1 <- output.full.merged[!grepl("NA", output.full.merged[["inf.by"]]) &
-                                         output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]],
-                                       list(Secondary.cases = length(hosts.ID)),
-                                       by = inf.by.y]
-      # Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y)
-      # Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
-      # Sec.cases1 <- data.table(Sec.cases1)
-
-      Sec.cases2 <- data.table(inf.by.y = as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),
-                               Secondary.cases = 0)
-      Sec.cases2 <- output.full[Sec.cases2, on = "hosts.ID==inf.by.y"][, c("hosts.ID", "Secondary.cases")]
-      colnames(Sec.cases2) <- c("inf.by.y", "Secondary.cases")
-      # Sec.cases2 <- dplyr::left_join(Sec.cases2, output.full[,c("hosts.ID")], by=c("inf.by.y"="hosts.ID"))
-      # Sec.cases2 <- data.table(Sec.cases2)
-
-      Sec.cases <- rbindlist(list(Sec.cases1, Sec.cases2), use.names = TRUE)
-      Sec.cases.A <- Sec.cases$Secondary.cases
+      Sec.cases <- output.full[, .N, by = "inf.by"]                  # count occurences of each host in "inf.by"
+      Sec.cases <- Sec.cases[output.full, on = "inf.by == hosts.ID"] # re-order by hosts.ID
+      Sec.cases.A <- Sec.cases[active == FALSE, ][["N"]]             # Keep only non active, and column N
+      Sec.cases.A[is.na(Sec.cases.A)] <- 0                           # NAs to 0
     }
 
-    return(list(N.inactive = nrow(Inactive),
+    return(list(N.inactive = n.Inactive,
                 R0.mean = mean(Sec.cases.A),
                 R0.dist = Sec.cases.A))
   }
@@ -416,43 +395,15 @@ getR0  <- function(nosoi.output) {
     output.full = rbindlist(list(outputA,outputB))
 
     #number of hosts inactive (have done their full cycle)
-    Inactive = output.full[output.full[["active"]] == 0]
-
     N.inactive.A <- nrow(subset(nosoi.output$host.info.A$table.hosts,active==0))
     N.inactive.B <- nrow(subset(nosoi.output$host.info.B$table.hosts,active==0))
 
-    #Secondary case, same host type
-    output.small <- output.full[,c("hosts.ID", "inf.by")]
-    output.full.merged <- output.small[output.full, on="hosts.ID==inf.by"]
-    colnames(output.full.merged) <- c("inf.by", "inf.by.y", "hosts.ID", "active", "host.type")
-    # output.full.merged <- output.full
-    # output.full.merged <- dplyr::left_join(output.full.merged, output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y"))
-    # output.full.merged <- as.data.table(output.full.merged)
-
-
-    #estimating R0 (mean number of secondary cases), R0 to the other host
-    Sec.cases1 <- output.full.merged[!grepl("NA", output.full.merged[["inf.by"]]) &
-                                       output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]],
-                                     list(Secondary.cases = length(hosts.ID)),
-                                     keyby = list(inf.by.y, host.type)]
-
-    # Sec.cases1 <- output.full.merged[!stringr::str_detect(output.full.merged[["inf.by"]],"NA") & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
-    # Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y, host.type)
-    # Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
-    # Sec.cases1 <- data.table(Sec.cases1)
-
-    Sec.cases2 <- data.table(inf.by.y = as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),
-                             Secondary.cases = 0)
-    Sec.cases2 <- output.full[Sec.cases2, on = "hosts.ID==inf.by.y"][, c("hosts.ID", "Secondary.cases", "host.type")]
-    colnames(Sec.cases2) <- c("inf.by.y", "Secondary.cases", "host.type")
-
-    # Sec.cases2 <- dplyr::left_join(Sec.cases2, output.full[,c("hosts.ID","host.type")], by=c("inf.by.y"="hosts.ID"))
-    # Sec.cases2 <- data.table(Sec.cases2)
-
-    Sec.cases <- rbindlist(list(Sec.cases1,Sec.cases2),use.names=TRUE)
-
-    Sec.cases.A <- subset(Sec.cases, host.type == nosoi.output$host.info.A$prefix.host)$Secondary.cases
-    Sec.cases.B <- subset(Sec.cases, host.type == nosoi.output$host.info.B$prefix.host)$Secondary.cases
+    Sec.cases <- output.full[, .N, by = "inf.by"]                  # count occurences of each host in "inf.by"
+    Sec.cases <- Sec.cases[output.full, on = "inf.by == hosts.ID"] # re-order by hosts.ID
+    Sec.cases.A <- Sec.cases[active == FALSE & host.type == nosoi.output$host.info.A$prefix.host, ][["N"]]             # Keep only non active, and column N
+    Sec.cases.A[is.na(Sec.cases.A)] <- 0                           # NAs to 0
+    Sec.cases.B <- Sec.cases[active == FALSE & host.type == nosoi.output$host.info.B$prefix.host, ][["N"]]             # Keep only non active, and column N
+    Sec.cases.B[is.na(Sec.cases.B)] <- 0                           # NAs to 0
 
     return(list(N.inactive.A = N.inactive.A,
                 R0.hostA.mean = mean(Sec.cases.A),
@@ -460,92 +411,5 @@ getR0  <- function(nosoi.output) {
                 N.inactive.B = N.inactive.B,
                 R0.hostB.mean = mean(Sec.cases.B),
                 R0.hostB.dist = Sec.cases.B))
-  }
-}
-
-# Old version, using dplyr and a loop
-#' @keywords internal
-getR0Old  <- function(nosoi.output) {
-  if (!requireNamespace("dplyr", quietly = TRUE)) {
-    stop("Package 'dplyr', is needed for 'getDynamicOld'.",
-         call. = FALSE)
-  }
-  #To avoids notes (use of dplyr functions)
-  suffix <- NULL
-  inf.by.y <- NULL
-  host.type <- NULL
-  hosts.ID <- NULL
-  active <- NULL
-
-  if(nosoi.output$type == "single"){
-    output.full <- nosoi.output$host.info.A$table.hosts[,c("hosts.ID", "inf.by","active")]
-    Inactive <- output.full[output.full[["active"]] == 0]  #get inactive hosts (have done their full cycle)
-    n.Inactive <- nrow(Inactive)
-    Sec.cases.A <- NA
-    if(n.Inactive > 0) {
-    #Secondary case, same host type
-    output.small <- output.full[,c("hosts.ID", "inf.by")]
-    output.full.merged <- output.full
-    output.full.merged <- dplyr::left_join(output.full.merged, output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y"))
-    output.full.merged <- as.data.table(output.full.merged)
-
-    #estimating R0 (mean number of secondary cases)
-    Sec.cases1 <- output.full.merged[!grepl("NA", output.full.merged[["inf.by"]]) & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
-    Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y)
-    Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
-    Sec.cases1 <- data.table(Sec.cases1)
-    Sec.cases2 <- data.table(inf.by.y=as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),Secondary.cases=0)
-    Sec.cases2 <- dplyr::left_join(Sec.cases2, output.full[,c("hosts.ID")], by=c("inf.by.y"="hosts.ID"))
-    Sec.cases2 <- data.table(Sec.cases2)
-
-    Sec.cases <- rbindlist(list(Sec.cases1,Sec.cases2),use.names=TRUE)
-    Sec.cases.A <- Sec.cases$Secondary.cases
-    }
-
-    return(list(N.inactive=nrow(Inactive),
-                R0.mean=mean(Sec.cases.A),
-                R0.dist=Sec.cases.A))
-  }
-
-  if(nosoi.output$type == "dual"){
-    outputA <- nosoi.output$host.info.A$table.hosts[,c("hosts.ID", "inf.by","active")]
-    outputA$host.type <- nosoi.output$host.info.A$prefix.host
-    outputB <- nosoi.output$host.info.B$table.hosts[,c("hosts.ID", "inf.by","active")]
-    outputB$host.type <- nosoi.output$host.info.B$prefix.host
-
-    output.full = rbindlist(list(outputA,outputB))
-
-    #number of hosts inactive (have done their full cycle)
-    Inactive = output.full[output.full[["active"]] == 0]
-
-    N.inactive.A <- nrow(subset(nosoi.output$host.info.A$table.hosts,active==0))
-    N.inactive.B <- nrow(subset(nosoi.output$host.info.B$table.hosts,active==0))
-
-    #Secondary case, same host type
-    output.small <- output.full[,c("hosts.ID", "inf.by")]
-    output.full.merged <- output.full
-    output.full.merged <- dplyr::left_join(output.full.merged, output.small, by=c("inf.by" = "hosts.ID"), suffix(".x",".y"))
-    output.full.merged <- as.data.table(output.full.merged)
-
-    #estimating R0 (mean number of secondary cases), R0 to the other host
-    Sec.cases1 <- output.full.merged[!grepl("NA", output.full.merged[["inf.by"]]) & output.full.merged[["inf.by"]] %in% Inactive[["hosts.ID"]]]
-    Sec.cases1 <- dplyr::group_by(Sec.cases1, inf.by.y, host.type)
-    Sec.cases1 <- dplyr::summarise(Sec.cases1, Secondary.cases=length(hosts.ID))
-    Sec.cases1 <- data.table(Sec.cases1)
-    Sec.cases2 <- data.table(inf.by.y=as.character(Inactive[["hosts.ID"]][!Inactive[["hosts.ID"]] %in% Sec.cases1$inf.by.y]),Secondary.cases=0)
-    Sec.cases2 <- dplyr::left_join(Sec.cases2, output.full[,c("hosts.ID","host.type")], by=c("inf.by.y"="hosts.ID"))
-    Sec.cases2 <- data.table(Sec.cases2)
-
-    Sec.cases <- rbindlist(list(Sec.cases1,Sec.cases2),use.names=TRUE)
-
-    Sec.cases.A <- subset(Sec.cases, host.type == nosoi.output$host.info.A$prefix.host)$Secondary.cases
-    Sec.cases.B <- subset(Sec.cases, host.type == nosoi.output$host.info.B$prefix.host)$Secondary.cases
-
-    return(list(N.inactive.A=N.inactive.A,
-                R0.hostA.mean=mean(Sec.cases.A),
-                R0.hostA.dist=Sec.cases.A,
-                N.inactive.B=N.inactive.B,
-                R0.hostB.mean=mean(Sec.cases.B),
-                R0.hostB.dist=Sec.cases.B))
   }
 }

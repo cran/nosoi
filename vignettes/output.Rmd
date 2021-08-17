@@ -265,7 +265,7 @@ library(nosoi)
 getR0(test.nosoiA)
 ```
 
-As you can see, out of the 117 inactive hosts, the mean $R_0$ is 1.041667. This does not of course reflect the distribution of $R_0$ where most hosts actually never transmitted the infection:
+As you can see, out of the 117 inactive hosts, the mean $R_0$ is 1.068376. This does not of course reflect the distribution of $R_0$ where most hosts actually never transmitted the infection:
 ```{r figureR0, eval=FALSE, message=FALSE}
 data = data.frame(R0=getR0(test.nosoiA)$R0.dist)
 ggplot(data=data, aes(x=R0)) + geom_histogram() + theme_minimal()
@@ -288,7 +288,7 @@ It can be extracted or visualized as such using the `table.hosts` table that lin
 It can also be extracted in a form mimicking a phylogenetic tree, 
 and visualized or saved as such using available tools for phylogenetic trees 
 such as [`ape`](https://CRAN.R-project.org/package=ape)
-and [`tidytree`](https://yulab-smu.github.io/treedata-book/).
+and [`tidytree`](https://yulab-smu.top/treedata-book/).
 To do so, you can use the `getTransmissionTree()` function,
 which arguments are the `nosoi` simulation output and which host type would be
 the tips of the tree ("A" by default, or "B" in case a dual-host simulation).
@@ -396,8 +396,8 @@ if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", qu
   test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 }
 
-if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE)) {
-  message("Packages 'ggplot2' and 'ggtree' are needed for plotting this figure.")
+if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
+  message("Packages 'ggplot2' and 'ggtree (> 3.1.3)' are needed for plotting this figure.")
 } else {
   library(ggplot2)
   library(ggtree)
@@ -470,7 +470,7 @@ ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=st
                                            legend.key = element_blank()) 
 ```
 ```{r treeB_actual, echo=FALSE, message=FALSE}
-if (!requireNamespace("ggtree", quietly = TRUE)) {
+if (!requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
   message("Package 'ggtree' is needed for plotting this figure.")
 } else {
   ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
@@ -520,7 +520,7 @@ ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(
                                            legend.key = element_blank()) 
 ```
 ```{r treeC_actual, echo=FALSE, message=FALSE}
-if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE)) {
+if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
   message("Packages 'ape', 'tidytree', 'treeio' and 'ggtree' are needed for transmission tree generation.")
 } else {
   ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
@@ -536,7 +536,7 @@ All the functions mentioned above produce a `tidytree::treedata` object.
 It is a phylogenetic tree, with nodes and tips annotated with all the characteristics
 of the epidemics, including the geographical location when applicable.
 This format is described in details by his developer in 
-this [ebook](https://yulab-smu.github.io/treedata-book/).
+this [ebook](https://yulab-smu.top/treedata-book/).
 
 This makes it easy to export the generated data to other software for downstream
 analyzes, thanks to the package [treeio](https://guangchuangyu.github.io/software/treeio/).
