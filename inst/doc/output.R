@@ -219,21 +219,33 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 ## ----treeA, eval=FALSE, message=FALSE-----------------------------------------
 #  test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 #  
-#  library(ggplot2)
-#  library(ggtree)
-#  ggtree(test.nosoiA.tree, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) +
-#    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8),
-#                                             legend.title = element_blank(),
-#                                             legend.key = element_blank())
+#  if (requireNamespace("ggtree", quietly = TRUE) &&
+#      requireNamespace("ggplot2", quietly = TRUE)) {
+#    library(ggtree)
+#    library(ggplot2)
+#  ggtree(test.nosoiA.tree, color = "gray30") +
+#    geom_nodepoint(aes(color=state)) +
+#    geom_tippoint(aes(color=state)) +
+#    theme_tree2() + xlab("Time (t)") +
+#    theme(legend.position = c(0,0.8),
+#          legend.title = element_blank(),
+#          legend.key = element_blank())
+#  } else {
+#    message("Packages 'ggtree' and 'ggplot2' are needed for plotting")
+#  }
 
 ## ----treeA_actual, echo=FALSE, message=FALSE----------------------------------
-if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
-  message("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.")
+if (!(requireNamespace("ape", quietly = TRUE) &&
+      requireNamespace("tidytree", quietly = TRUE) &&
+      requireNamespace("treeio", quietly = TRUE))) {
+   message("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.")
 } else {
-  test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
+   test.nosoiA.tree <- getTransmissionTree(test.nosoiA)
 }
 
-if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
+if (!(requireNamespace("ggplot2", quietly = TRUE) &&
+      requireNamespace("ggtree", quietly = TRUE) &&
+      (utils::packageVersion("ggtree") < "3.1.3"))) {
   message("Packages 'ggplot2' and 'ggtree (> 3.1.3)' are needed for plotting this figure.")
 } else {
   library(ggplot2)
@@ -245,7 +257,9 @@ if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("ggtree", 
 }
 
 ## ----tree-sample1, echo=FALSE, message=FALSE----------------------------------
-if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
+if (!(requireNamespace("ape", quietly = TRUE) &&       
+      requireNamespace("tidytree", quietly = TRUE) && 
+      requireNamespace("treeio", quietly = TRUE))) {
   message("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.")
 } else {
   library(dplyr)
@@ -267,20 +281,25 @@ if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", qu
 #  test.nosoiA.tree.sampled <- sampleTransmissionTree(test.nosoiA, test.nosoiA.tree, samples.data.table)
 
 ## ----tree-sample2_actual, echo=FALSE, message=FALSE---------------------------
-if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
+if (!(requireNamespace("ape", quietly = TRUE) && 
+      requireNamespace("tidytree", quietly = TRUE) && 
+      requireNamespace("treeio", quietly = TRUE))) {
   message("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.")
 } else {
   test.nosoiA.tree.sampled <- sampleTransmissionTree(test.nosoiA, test.nosoiA.tree, samples.data.table)
 }
 
 ## ----treeB, eval = FALSE, message=FALSE---------------------------------------
+#  if (!requireNamespace("ggtree", quietly = TRUE)) {
 #  ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) +
 #    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8),
 #                                             legend.title = element_blank(),
 #                                             legend.key = element_blank())
+#  }
 
 ## ----treeB_actual, echo=FALSE, message=FALSE----------------------------------
-if (!requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
+if (!(requireNamespace("ggtree", quietly = TRUE) &&
+    (utils::packageVersion("ggtree") < "3.1.3"))) {
   message("Package 'ggtree' is needed for plotting this figure.")
 } else {
   ggtree(test.nosoiA.tree.sampled, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 
@@ -290,7 +309,9 @@ if (!requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtre
 }
 
 ## ----tree-sample3, echo=FALSE, message=FALSE----------------------------------
-if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
+if (!(requireNamespace("ape", quietly = TRUE) && 
+      requireNamespace("tidytree", quietly = TRUE) && 
+      requireNamespace("treeio", quietly = TRUE))) {
   message("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.")
 } else {
   set.seed(5905950)
@@ -303,20 +324,30 @@ if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", qu
 #  test.nosoiA.tree.sampled.exiting <- sampleTransmissionTreeFromExiting(test.nosoiA.tree, sampled.hosts)
 
 ## ----tree-sample4_actual, echo=FALSE, message=FALSE---------------------------
-if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE)) {
+if (!(requireNamespace("ape", quietly = TRUE) && 
+      requireNamespace("tidytree", quietly = TRUE) &&
+      requireNamespace("treeio", quietly = TRUE))) {
   message("Packages 'ape', 'tidytree' and 'treeio' are needed for transmission tree generation.")
 } else {
   test.nosoiA.tree.sampled.exiting <- sampleTransmissionTreeFromExiting(test.nosoiA.tree, sampled.hosts)
 }
 
 ## ----treeC, eval=FALSE, message=FALSE-----------------------------------------
+#  if (requireNamespace("ggtree", quietly = TRUE)) {
 #  ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) +
 #    theme_tree2() + xlab("Time (t)") + theme(legend.position = c(0,0.8),
 #                                             legend.title = element_blank(),
 #                                             legend.key = element_blank())
+#  } else {
+#    message("Package 'ggtree' required for plotting")
+#  }
 
 ## ----treeC_actual, echo=FALSE, message=FALSE----------------------------------
-if (!requireNamespace("ape", quietly = TRUE) || !requireNamespace("tidytree", quietly = TRUE) || !requireNamespace("treeio", quietly = TRUE) || !requireNamespace("ggtree", quietly = TRUE) || (utils::packageVersion("ggtree") < "3.1.3")) {
+if (!(requireNamespace("ape", quietly = TRUE) && 
+      requireNamespace("tidytree", quietly = TRUE) && 
+      requireNamespace("treeio", quietly = TRUE) &&
+      requireNamespace("ggtree", quietly = TRUE) && 
+      (utils::packageVersion("ggtree") < "3.1.3"))) {
   message("Packages 'ape', 'tidytree', 'treeio' and 'ggtree' are needed for transmission tree generation.")
 } else {
   ggtree(test.nosoiA.tree.sampled.exiting, color = "gray30") + geom_nodepoint(aes(color=state)) + geom_tippoint(aes(color=state)) + geom_tiplab(aes(label=host)) + 

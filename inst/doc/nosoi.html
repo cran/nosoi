@@ -12,34 +12,48 @@
 
 <meta name="author" content="Sebastian Lequime" />
 
-<meta name="date" content="2021-08-17" />
+<meta name="date" content="2024-02-09" />
 
 <title>Getting started</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -51,55 +65,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -108,13 +121,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -126,7 +146,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -140,124 +340,237 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">Getting started</h1>
 <h4 class="author">Sebastian Lequime</h4>
-<h4 class="date">2021-08-17</h4>
+<h4 class="date">2024-02-09</h4>
 
 
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p><code>nosoi</code> aims to provide a modular framework to conduct epidemiological simulations under a wide range of scenarios, varying from relatively simple to highly complex and parametric. This flexibility allows <code>nosoi</code> to take into account the effect of numerous covariates, taken individually or in the form of interactions, on the epidemic process, without having to use advanced mathematics to formalize the model into differential equations. At its core, <code>nosoi</code> generates a transmission chain (a link between hosts), the foundation of every epidemic process, allowing to reconstruct in great details the history of the epidemic.</p>
-<p><code>nosoi</code> is an agent-based model, which means it is centered on individuals, here called “hosts”, that enter the simulation when they get infected. <code>nosoi</code> is also stochastic, and thus relies heavily on probabilities, mainly 4 core probabilities. It operates on a discretized time.</p>
+<p><code>nosoi</code> aims to provide a modular framework to conduct
+epidemiological simulations under a wide range of scenarios, varying
+from relatively simple to highly complex and parametric. This
+flexibility allows <code>nosoi</code> to take into account the effect of
+numerous covariates, taken individually or in the form of interactions,
+on the epidemic process, without having to use advanced mathematics to
+formalize the model into differential equations. At its core,
+<code>nosoi</code> generates a transmission chain (a link between
+hosts), the foundation of every epidemic process, allowing to
+reconstruct in great details the history of the epidemic.</p>
+<p><code>nosoi</code> is an agent-based model, which means it is
+centered on individuals, here called “hosts”, that enter the simulation
+when they get infected. <code>nosoi</code> is also stochastic, and thus
+relies heavily on probabilities, mainly 4 core probabilities. It
+operates on a discretized time.</p>
 <div id="critical-assumption-of-nosoi" class="section level2">
 <h2>Critical assumption of <code>nosoi</code></h2>
-<p><code>nosoi</code> assumes that the maximum number of hosts infected during a simulation is orders of magnitude smaller than the total exposed population. This means that, currently, it does not take into account building herd immunity using the simulated epidemic results <!-- PB: I'm not sure I understand the sentence above. --> (although a proxy can be used, as it will be discussed in several of the companion tutorials).</p>
+<p><code>nosoi</code> assumes that the maximum number of hosts infected
+during a simulation is orders of magnitude smaller than the total
+exposed population. This means that, currently, it does not take into
+account building herd immunity using the simulated epidemic results
+<!-- PB: I'm not sure I understand the sentence above. --> (although a
+proxy can be used, as it will be discussed in several of the companion
+tutorials).</p>
 </div>
 <div id="essential-building-blocks-3-probabilities-and-2-numbers" class="section level2">
 <h2>Essential building blocks: 3 probabilities and 2 numbers</h2>
-<p>At its core, <code>nosoi</code> can be summarized by 3 probabilities and 2 numbers at a specific time point:</p>
+<p>At its core, <code>nosoi</code> can be summarized by 3 probabilities
+and 2 numbers at a specific time point:</p>
 <ul>
-<li><code>pExit</code> the probability to exit the simulation. For hosts, that means - for example - dying, being cured, leaving the study area, etc.</li>
-<li><code>pMove</code> the probability to move, only relevant when your simulation has some kind of structure, either in a discrete or continuous space. For hosts, that could be - for example - traveling, changing status (gaining access to treatment), etc.</li>
-<li><code>sdMove</code> the standard deviation of the random walk (links to the distance traveled in coordinate space), only relevant when a structure is imposed or assumed in a continuous space.</li>
-<li><code>nContact</code> the number of contacts. How many potentially infectious contacts does an infected host have?</li>
-<li><code>pTrans</code> the probability to transmit. When a contact occurs between two hosts, with one of them being infected, the probability that the infection gets transmitted to the uninfected one.</li>
+<li><code>pExit</code> the probability to exit the simulation. For
+hosts, that means - for example - dying, being cured, leaving the study
+area, etc.</li>
+<li><code>pMove</code> the probability to move, only relevant when your
+simulation has some kind of structure, either in a discrete or
+continuous space. For hosts, that could be - for example - traveling,
+changing status (gaining access to treatment), etc.</li>
+<li><code>sdMove</code> the standard deviation of the random walk (links
+to the distance traveled in coordinate space), only relevant when a
+structure is imposed or assumed in a continuous space.</li>
+<li><code>nContact</code> the number of contacts. How many potentially
+infectious contacts does an infected host have?</li>
+<li><code>pTrans</code> the probability to transmit. When a contact
+occurs between two hosts, with one of them being infected, the
+probability that the infection gets transmitted to the uninfected
+one.</li>
 </ul>
-<p>Each of these probabilities and numbers are computed during the simulation. In a very simple scenario, each one is a constant. In more complex models supported by <code>nosoi</code>, these probabilities could depend on a host’s parameters (e.g. genetics), dynamic parameters (for how long the host has been infected), environmental parameters (related to the host’s location), or the particular period of the simulation (e.g. seasons, mitigation campaign,…). All those parameters can be taken into account either individually, or for the population as a whole.</p>
+<p>Each of these probabilities and numbers are computed during the
+simulation. In a very simple scenario, each one is a constant. In more
+complex models supported by <code>nosoi</code>, these probabilities
+could depend on a host’s parameters (e.g. genetics), dynamic parameters
+(for how long the host has been infected), environmental parameters
+(related to the host’s location), or the particular period of the
+simulation (e.g. seasons, mitigation campaign,…). All those parameters
+can be taken into account either individually, or for the population as
+a whole.</p>
 </div>
 <div id="what-happens-at-each-time-step" class="section level2">
 <h2>What happens at each time step?</h2>
-<p>Time is discretized in <code>nosoi</code>. Each time step follows the same pattern for each host:</p>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Time is discretized in <code>nosoi</code>. Each time step follows the
+same pattern for each host:</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <ul>
-<li><code>pExit</code>: does the host exit the simulation ? This step samples YES or NO based on the probability <code>pExit</code>.</li>
-<li><code>pMove</code>: does the host move (if there is structure) ? This step samples YES or NO based on the probability <code>pMove</code>.</li>
-<li><code>sdMove</code>: how far does the host move (if the structure is a continuous space)? This step returns a number used as a distance in the continuous space, drawn with standard deviation <code>sdMove</code>.</li>
-<li><code>nContact</code>: how many infectious contacts does the host have? This step yields an integer number <code>nContact</code>.</li>
-<li><code>pTrans</code>: if there is an infectious contact, does the host transmit the infection to a new host? This step samples YES or NO based on the probability <code>pTrans</code>.</li>
+<li><code>pExit</code>: does the host exit the simulation ? This step
+samples YES or NO based on the probability <code>pExit</code>.</li>
+<li><code>pMove</code>: does the host move (if there is structure) ?
+This step samples YES or NO based on the probability
+<code>pMove</code>.</li>
+<li><code>sdMove</code>: how far does the host move (if the structure is
+a continuous space)? This step returns a number used as a distance in
+the continuous space, drawn with standard deviation
+<code>sdMove</code>.</li>
+<li><code>nContact</code>: how many infectious contacts does the host
+have? This step yields an integer number <code>nContact</code>.</li>
+<li><code>pTrans</code>: if there is an infectious contact, does the
+host transmit the infection to a new host? This step samples YES or NO
+based on the probability <code>pTrans</code>.</li>
 </ul>
-<p>After these five propagation steps, the simulation moves to the next time step.</p>
+<p>After these five propagation steps, the simulation moves to the next
+time step.</p>
 </div>
 </div>
 <div id="setting-up-the-core-functions" class="section level1">
 <h1>Setting up the core functions</h1>
-<p><code>nosoi</code> runs under a series of user-defined probabilities and numbers (see <a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">General principles</a> ). Each follows the same principles to be set up. We provide here a detailed explanation on how to set up a function correctly so that it can be used in the simulator. This will apply to the five core functions already mentioned: <code>pExit</code>, <code>pMove</code>, <code>sdMove</code>, <code>nContact</code> and <code>pTrans</code>.</p>
+<p><code>nosoi</code> runs under a series of user-defined probabilities
+and numbers (see <a href="nosoi.html#essential-building-blocs-3-probabilities-and-2-numbers">General
+principles</a> ). Each follows the same principles to be set up. We
+provide here a detailed explanation on how to set up a function
+correctly so that it can be used in the simulator. This will apply to
+the five core functions already mentioned: <code>pExit</code>,
+<code>pMove</code>, <code>sdMove</code>, <code>nContact</code> and
+<code>pTrans</code>.</p>
 <div id="expected-output" class="section level2">
 <h2>Expected output</h2>
-<p>Every function which name starts with a <code>p</code> (i.e. <code>pExit</code>, <code>pMove</code> and <code>pTrans</code>) should return a single probability (a number between 0 and 1).</p>
-<p><code>nContact</code> should return a positive natural number (positive integer).</p>
-<p><code>sdMove</code> should return a real number (keep in mind this number is related to your coordinate space).</p>
+<p>Every function which name starts with a <code>p</code>
+(i.e. <code>pExit</code>, <code>pMove</code> and <code>pTrans</code>)
+should return a single probability (a number between 0 and 1).</p>
+<p><code>nContact</code> should return a positive natural number
+(positive integer).</p>
+<p><code>sdMove</code> should return a real number (keep in mind this
+number is related to your coordinate space).</p>
 </div>
 <div id="functions-arguments" class="section level2">
 <h2>Functions’ arguments</h2>
 <div id="t" class="section level3">
 <h3><code>t</code></h3>
-<p>A core function in <code>nosoi</code> should always explicitly depend on the time <code>t</code> (e.g. <code>pExit(t)</code>), even if <code>t</code> is not used within the body of the function. For instance, to return a single constant value of 0.08, the function should be expressed as:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t){<span class="fl">0.08</span>}</span></code></pre></div>
+<p>A core function in <code>nosoi</code> should always explicitly depend
+on the time <code>t</code> (e.g. <code>pExit(t)</code>), even if
+<code>t</code> is not used within the body of the function. For
+instance, to return a single constant value of 0.08, the function should
+be expressed as:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t){<span class="fl">0.08</span>}</span></code></pre></div>
 <!-- This will return a single value (0.08). -->
-<p>The argument <code>t</code> represents the time since the host’s initial infection, and can be included in the body of the function, to model a time-varying probability or number. For instance, a quantity depending on the following function will evolve in time as a logistic distribution with parameters <span class="math inline">\(\mu\)</span> 10 and <span class="math inline">\(s\)</span> 2:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t){<span class="fu">plogis</span>(t,<span class="dv">10</span>,<span class="dv">2</span>)}</span></code></pre></div>
+<p>The argument <code>t</code> represents the time since the host’s
+initial infection, and can be included in the body of the function, to
+model a time-varying probability or number. For instance, a quantity
+depending on the following function will evolve in time as a logistic
+distribution with parameters <span class="math inline">\(\mu\)</span> 10
+and <span class="math inline">\(s\)</span> 2:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t){<span class="fu">plogis</span>(t,<span class="dv">10</span>,<span class="dv">2</span>)}</span></code></pre></div>
 <!-- Here the probability/number will follow a logistic distribution with parameters $\mu$ 10 and $s$ 2. -->
 </div>
 <div id="prestime" class="section level3">
 <h3><code>prestime</code></h3>
-<p>The argument <code>prestime</code> can be used to represent the <em>absolute</em> time of the simulation, shared by all the hosts (as opposed to the relative time since infection <code>t</code>, which is individual-dependent). For instance, the following function can be used to produce a periodic pattern:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,prestime){(<span class="fu">sin</span>(prestime<span class="sc">/</span><span class="dv">12</span>)<span class="sc">+</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span>}</span></code></pre></div>
+<p>The argument <code>prestime</code> can be used to represent the
+<em>absolute</em> time of the simulation, shared by all the hosts (as
+opposed to the relative time since infection <code>t</code>, which is
+individual-dependent). For instance, the following function can be used
+to produce a periodic pattern:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,prestime){(<span class="fu">sin</span>(prestime<span class="sc">/</span><span class="dv">12</span>)<span class="sc">+</span><span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span>}</span></code></pre></div>
 <!-- In that specific case, the function will return values following a periodic pattern. -->
 </div>
 <div id="current.in-and-current.env.value" class="section level3">
 <h3><code>current.in</code> and <code>current.env.value</code></h3>
-<p>The arguments <code>current.in</code> (discrete structure) or <code>current.env.value</code> (continuous structure) can be used to represent the location of the host (only if a structured population is used), as shown below:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,current.in){</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;A&quot;</span>){<span class="fu">return</span>(<span class="dv">0</span>)}</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;B&quot;</span>){<span class="fu">return</span>(<span class="fl">0.5</span>)}</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;C&quot;</span>){<span class="fu">return</span>(<span class="dv">1</span>)}} <span class="co">#discrete (between states &quot;A&quot;,&quot;B&quot; and &quot;C&quot;)</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,current.env.value){current.env.value<span class="sc">/</span><span class="dv">100</span>} <span class="co">#continuous</span></span></code></pre></div>
-<p>For more details on how to set up the influence of the structure, we refer to the tutorials on <a href="discrete.html">discrete</a> and <a href="continuous.html">continuous</a> structure.</p>
+<p>The arguments <code>current.in</code> (discrete structure) or
+<code>current.env.value</code> (continuous structure) can be used to
+represent the location of the host (only if a structured population is
+used), as shown below:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,current.in){</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;A&quot;</span>){<span class="fu">return</span>(<span class="dv">0</span>)}</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;B&quot;</span>){<span class="fu">return</span>(<span class="fl">0.5</span>)}</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;C&quot;</span>){<span class="fu">return</span>(<span class="dv">1</span>)}} <span class="co">#discrete (between states &quot;A&quot;,&quot;B&quot; and &quot;C&quot;)</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,current.env.value){current.env.value<span class="sc">/</span><span class="dv">100</span>} <span class="co">#continuous</span></span></code></pre></div>
+<p>For more details on how to set up the influence of the structure, we
+refer to the tutorials on <a href="discrete.html">discrete</a> and <a href="continuous.html">continuous</a> structure.</p>
 </div>
 <div id="host.count" class="section level3">
 <h3><code>host.count</code></h3>
-<p>The argument <code>host.count</code> can be used to represent the number of hosts present at a given location (only for a structured population), as in the following:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,current.in, host.count){</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;A&quot;</span>){<span class="fu">return</span>(<span class="dv">0</span>)}</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;B&quot;</span> <span class="sc">&amp;</span> host.count <span class="sc">&lt;</span> <span class="dv">300</span> ){<span class="fu">return</span>(<span class="fl">0.5</span>)}</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;B&quot;</span> <span class="sc">&amp;</span> host.count <span class="sc">&gt;=</span> <span class="dv">300</span> ){<span class="fu">return</span>(<span class="dv">0</span>)}</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;C&quot;</span>){<span class="fu">return</span>(<span class="dv">1</span>)}} <span class="co">#discrete (between states &quot;A&quot;,&quot;B&quot; and &quot;C&quot;)</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,current.env.value,host.count){(current.env.value<span class="sc">-</span>host.count)<span class="sc">/</span><span class="dv">100</span>} <span class="co">#continuous</span></span></code></pre></div>
+<p>The argument <code>host.count</code> can be used to represent the
+number of hosts present at a given location (only for a structured
+population), as in the following:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,current.in, host.count){</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;A&quot;</span>){<span class="fu">return</span>(<span class="dv">0</span>)}</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;B&quot;</span> <span class="sc">&amp;</span> host.count <span class="sc">&lt;</span> <span class="dv">300</span> ){<span class="fu">return</span>(<span class="fl">0.5</span>)}</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;B&quot;</span> <span class="sc">&amp;</span> host.count <span class="sc">&gt;=</span> <span class="dv">300</span> ){<span class="fu">return</span>(<span class="dv">0</span>)}</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="cf">if</span>(current.in<span class="sc">==</span><span class="st">&quot;C&quot;</span>){<span class="fu">return</span>(<span class="dv">1</span>)}} <span class="co">#discrete (between states &quot;A&quot;,&quot;B&quot; and &quot;C&quot;)</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,current.env.value,host.count){(current.env.value<span class="sc">-</span>host.count)<span class="sc">/</span><span class="dv">100</span>} <span class="co">#continuous</span></span></code></pre></div>
 </div>
 </div>
 <div id="extra-parameters" class="section level2">
 <h2>Extra Parameters</h2>
-<p>Any of the parameters used in these functions can be themselves dependent on the individual host (in order to include some heterogeneity between host). For instance, the <span class="math inline">\(\mu\)</span> parameter of a logistic distribution can be determined for each individual host by another function to be specified:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,pFunction.param1){<span class="fu">plogis</span>(t,pFunction.param1,<span class="dv">2</span>)}</span></code></pre></div>
+<p>Any of the parameters used in these functions can be themselves
+dependent on the individual host (in order to include some heterogeneity
+between host). For instance, the <span class="math inline">\(\mu\)</span> parameter of a logistic distribution
+can be determined for each individual host by another function to be
+specified:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t,pFunction.param1){<span class="fu">plogis</span>(t,pFunction.param1,<span class="dv">2</span>)}</span></code></pre></div>
 <!-- In this case, the $\mu$ parameter will be determined for each individual host by another function that you have to specify. Here we will use: -->
-<p>Where for instance <span class="math inline">\(\mu\)</span> can be sampled from a normal distribution (mean = 10 and sd = 2):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p_Function_param1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){<span class="fu">rnorm</span>(x,<span class="at">mean=</span><span class="dv">10</span>,<span class="at">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></span></code></pre></div>
-<p>Notice here that the function is expressed as a function of <code>x</code> instead of <code>t</code>. <code>x</code> is present in the body of the function as the number of draws to make from the distribution.</p>
-<p>Every parameter function you specify should be gathered into a list, where the function determining the parameter for each individual (here, <code>p_Function_param1</code>) has to be named according to the name used in <code>p_Function</code> for this parameter (here, <code>pFunction.param1</code>).</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>p_Function_parameters  <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">pFunction.param1 =</span> p_Function_param1)</span></code></pre></div>
+<p>Where for instance <span class="math inline">\(\mu\)</span> can be
+sampled from a normal distribution (mean = 10 and sd = 2):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>p_Function_param1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){<span class="fu">rnorm</span>(x,<span class="at">mean=</span><span class="dv">10</span>,<span class="at">sd=</span><span class="dv">2</span>)} <span class="co">#sampling one parameter for each infected individual</span></span></code></pre></div>
+<p>Notice here that the function is expressed as a function of
+<code>x</code> instead of <code>t</code>. <code>x</code> is present in
+the body of the function as the number of draws to make from the
+distribution.</p>
+<p>Every parameter function you specify should be gathered into a list,
+where the function determining the parameter for each individual (here,
+<code>p_Function_param1</code>) has to be named according to the name
+used in <code>p_Function</code> for this parameter (here,
+<code>pFunction.param1</code>).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>p_Function_parameters  <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">pFunction.param1 =</span> p_Function_param1)</span></code></pre></div>
 </div>
 <div id="combining-arguments" class="section level2">
 <h2>Combining arguments</h2>
-<p>We have previously shown that you can combine the time since infection <code>t</code> with other parameters such as <code>current.in</code> or <code>prestime</code>. In fact, you can combine as many arguments as you want, making a function dependent on the time since infection, current location, present time and individual host-dependent parameters. They however need to respect a specific order to be correctly parsed by the simulator: first <code>t</code>, then <code>prestime</code>, then <code>current.in</code> (discrete) or <code>current.env.value</code> (continuous) and finally individual host-dependent parameters.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t, prestime, current.in, pFunction.param1, pFunction.param2,...){}</span></code></pre></div>
+<p>We have previously shown that you can combine the time since
+infection <code>t</code> with other parameters such as
+<code>current.in</code> or <code>prestime</code>. In fact, you can
+combine as many arguments as you want, making a function dependent on
+the time since infection, current location, present time and individual
+host-dependent parameters. They however need to respect a specific order
+to be correctly parsed by the simulator: first <code>t</code>, then
+<code>prestime</code>, then <code>current.in</code> (discrete) or
+<code>current.env.value</code> (continuous) and finally individual
+host-dependent parameters.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>p_Function  <span class="ot">&lt;-</span> <span class="cf">function</span>(t, prestime, current.in, pFunction.param1, pFunction.param2,...){}</span></code></pre></div>
 </div>
 </div>
 <div id="going-further" class="section level1">
 <h1>Going further</h1>
-<p>Once your core functions are ready, you can provide everything <code>nosoi</code> needs to run a simulation. A series of tutorials will guide you in how to set up <code>nosoi</code> depending on your case, both for single host and dual host scenarios:</p>
+<p>Once your core functions are ready, you can provide everything
+<code>nosoi</code> needs to run a simulation. A series of tutorials will
+guide you in how to set up <code>nosoi</code> depending on your case,
+both for single host and dual host scenarios:</p>
 <ol style="list-style-type: decimal">
-<li><a href="none.html">Spread of a pathogen in a homogeneous population (no structure) of hosts</a>, a “simple” scenario.</li>
-<li><a href="discrete.html">Spread of a pathogen in a structured (discrete) population of hosts</a>.</li>
-<li><a href="continuous.html">Spread of a pathogen in a structure (continuous) population of hosts</a>.</li>
+<li><a href="none.html">Spread of a pathogen in a homogeneous population
+(no structure) of hosts</a>, a “simple” scenario.</li>
+<li><a href="discrete.html">Spread of a pathogen in a structured
+(discrete) population of hosts</a>.</li>
+<li><a href="continuous.html">Spread of a pathogen in a structure
+(continuous) population of hosts</a>.</li>
 </ol>
-<p>To get basic statistics or approximated phylogenetic trees out of your simulations output, you can have a look at <a href="output.html">this page</a>. To visualize your simulations, you can have a look at <a href="https://slequime.github.io/nosoi/articles/examples/viz.html">these few examples</a>.</p>
+<p>To get basic statistics or approximated phylogenetic trees out of
+your simulations output, you can have a look at <a href="output.html">this page</a>. To visualize your simulations, you can
+have a look at <a href="https://slequime.github.io/nosoi/articles/examples/viz.html">these
+few examples</a>.</p>
 <p>A series of practical examples are also available:</p>
 <ul>
-<li><a href="https://slequime.github.io/nosoi/articles/examples/dengue.html">Spread of dengue virus in a discrete space</a>.</li>
-<li><a href="https://slequime.github.io/nosoi/articles/examples/ebola.html">Spread of Ebola virus in a continuous space</a>.</li>
-<li><a href="https://slequime.github.io/nosoi/articles/examples/vector-competence.html">Epidemiological impact of mosquito vector competence</a>.</li>
+<li><a href="https://slequime.github.io/nosoi/articles/examples/dengue.html">Spread
+of dengue virus in a discrete space</a>.</li>
+<li><a href="https://slequime.github.io/nosoi/articles/examples/ebola.html">Spread
+of Ebola virus in a continuous space</a>.</li>
+<li><a href="https://slequime.github.io/nosoi/articles/examples/vector-competence.html">Epidemiological
+impact of mosquito vector competence</a>.</li>
 </ul>
 <!-- PB: If the examples are not on the CRAN, could these dead link be a problem ? -->
 </div>
